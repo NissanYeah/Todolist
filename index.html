@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/all.css">
+    <script src="./javascript/vendor.js"></script>
+
+
+</head>
+
+<body class="bg-lighter">
+    <div class="col-md-9 container">
+
+        <h1 class="mt-0 text-muted">Todo 待辦事項</h1>
+
+        <div class="alert alert-secondary">
+            <ol class="mb-0">
+                <li>代辦事項</li>
+            </ol>
+
+        </div>
+        <div id="app">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">待辦事項</span>
+                </div>
+                <input type="text" class="form-control" placeholder="準備要做的任務" v-model="newTodo" @keyup.enter="addTodo">
+                <div class="input-group-prepend">
+                    <select v-model="catagory_selected">
+                        <option value="" disabled selected>-任務類型-</option>
+                        <option value="人生主線">人生主線</option>
+                        <option value="人生雜事">人生雜事</option>
+                        <option value="工作主線">工作主線</option>
+                        <option value="工作雜事">工作雜事</option>
+                    </select>
+                </div>
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button" @click="addTodo">新增</button>
+                </div>
+            </div>
+            <div class="card text-center">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link" :class="{'active':visibilty == 'all'}" @click="visibilty ='all'" href="#">全部</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" :class="{'active':visibilty == 'life-main-line'}" @click="visibilty ='life-main-line'" href="#">人生主線</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" :class="{'active':visibilty == 'life-vice-line'}" @click="visibilty ='life-vice-line'" href="#">人生雜事</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" :class="{'active':visibilty == 'work-main-line'}" @click="visibilty ='work-main-line'" href="#">工作主線</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" :class="{'active':visibilty == 'work-vice-line'}" @click="visibilty ='work-vice-line'" href="#">工作雜事</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" :class="{'active':visibilty == 'done'}" @click="visibilty ='done'" href="#">完成</a>
+                        </li>
+                    </ul>
+                </div>
+                <ul class="list-group list-group-flush text-left">
+                    <li class="list-group-item" v-for="(item,key) in filteredTodo">
+                        <div class="d-flex">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" v-model="item.completed" :id="item.id">
+                                <label class="form-check-label" :for="item.id" :class="{'completed':item.completed}">
+                                    {{item.title}}
+
+                                </label>
+                            </div>
+                            <button type="button" class="close ml-auto" aria-label="Close" @click="removeTodo(key)">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </li>
+
+                    <li class="list-group-item">
+                        <input type="text" class="form-control">
+                    </li>
+                </ul>
+                <div class="card-footer d-flex justify-content-between">
+                    <span>還有 3 筆任務未完成</span>
+                    <a href="#">清除所有任務</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        src = "https://www.gstatic.com/firebasejs/5.2.0/firebase.js" >
+    </script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCYwii4dJlgVvehy3wQpS1Aw8iaXZmNrO8",
+            authDomain: "todo-project-e731b.firebaseapp.com",
+            databaseURL: "https://todo-project-e731b.firebaseio.com",
+            projectId: "todo-project-e731b",
+            storageBucket: "todo-project-e731b.appspot.com",
+            messagingSenderId: "803994604460"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script src="./javascript/firebase.js "></script>
+    <script src="./javascript/vue.js "></script>
+
+
+
+
+
+</body>
+
+</html>
