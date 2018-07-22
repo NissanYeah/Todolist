@@ -1,3 +1,5 @@
+// 連接資料庫
+
 var config = {
     apiKey: "AIzaSyCYwii4dJlgVvehy3wQpS1Aw8iaXZmNrO8",
     authDomain: "todo-project-e731b.firebaseapp.com",
@@ -8,33 +10,38 @@ var config = {
 };
 firebase.initializeApp(config);
 
-// var refName = firebase.database().ref().set({})
 // 清除資料庫
+// var refName = firebase.database().ref().set({})
 
-var todos = [];
+//資料結構
+// var todos = [{
+//     id: 12312389,
+//     title: "買菜",
+//     catagory: "secondary",
+//     completed: false
+// }];
 
 
 var app = new Vue({
     el: "#app",
     data: {
         newTodo: "",
-        catagory_selected: "",
-        todos: todos,
-        visibilty: "all"
+        todos: {
+            done: 0,
+            todolist: []
+        },
+        visibilty: "all",
+        catagory_selected: ''
     },
     methods: {
         addTodo: function () {
             var value = this.newTodo.trim();
             var value_catagory = this.catagory_selected;
+            var timestamp = Math.floor(Date.now());
             if (!value) {
                 return;
             }
-            if (value && !value_catagory) {
-                alert("請選擇任務類型")
-                return;
-            }
-            var timestamp = Math.floor(Date.now());
-            this.todos.push({
+            this.todos.todolist.push({
                 id: timestamp,
                 title: value,
                 catagory: value_catagory,
@@ -43,66 +50,97 @@ var app = new Vue({
             firebase.database().ref().set(this.todos);
             this.newTodo = '';
         },
-        removeTodo: function (key) {
-            this.todos.splice(key, 1);
+        removeTodo: function (todo) {
+            var inindex = '';
+            var vm = this;
+            var count = 0;
+            // 刪除
+            this.todos.todolist.forEach(function (item, key) {
+                if (item.id === todo.id)
+                    inindex = key;
+            });
+            this.todos.todolist.splice(inindex, 1);
+
+            // 重新計算完成的筆數
+            this.todos.todolist.forEach(function (item) {
+                if (item.completed) {
+                    count++;
+                }
+            });
+            this.todos.done = count;
+
+
             firebase.database().ref().set(this.todos);
         },
+        removealltodo: function () {
+            // 重置資料
+            this.todos = {
+                done: 0,
+                todolist: []
+            };
+            firebase.database().ref().set(this.todos);
+        },
+        finish: function (item) {
+            item.completed = !item.completed;
+            var count = 0;
+            this.todos.todolist.forEach(function (item) {
+                if (item.completed) {
+                    count++;
+                }
+            });
+            this.todos.done = count;
+            firebase.database().ref().set(this.todos);
+
+
+
+        }
+
 
     },
     created: function () {
-        // firebase.database().ref();
-        // firebase.database().ref().set(todos);
-        // 把資料推入資料庫
-        var vm = this;
-        var refname = firebase.database().ref()
-        refname.once("value", function (snapshot) {
-            vm.todos = snapshot.val()
 
-        })
+        var vm = this;
+        var getlist = firebase.database().ref();
+        getlist.once("value", function (snapshot) {
+            vm.todos = snapshot.val();
+            if (vm.todos.todolist == undefined) {
+                vm.todos.todolist = [];
+                // firebase無法儲存空陣列，因此如果todolist未定義，就定義成空陣列
+            }
+        });
+
+
+
+
 
     },
     computed: {
         filteredTodo: function () {
             if (this.visibilty == 'all') {
 
-                return this.todos;
-            } else if (this.visibilty == 'life-main-line') {
+                return this.todos.todolist;
+            } else if (this.visibilty == 'priority') {
                 var newTodos = [];
-                this.todos.forEach(function (item) {
-                    if (item.catagory == '人生主線' && !item.completed) {
-                        newTodos.push(item);
-                    }
-                });
-
-                return newTodos;
-            } else if (this.visibilty == 'life-vice-line') {
-                var newTodos = [];
-                this.todos.forEach(function (item) {
-                    if (item.catagory == '人生雜事' && !item.completed) {
+                this.todos.todolist.forEach(function (item) {
+                    if (item.catagory == 'priority' && !item.completed) {
                         newTodos.push(item);
                     }
                 });
                 return newTodos;
 
-            } else if (this.visibilty == 'work-main-line') {
+            } else if (this.visibilty == 'secondary') {
+
                 var newTodos = [];
-                this.todos.forEach(function (item) {
-                    if (item.catagory == '工作主線' && !item.completed) {
+                this.todos.todolist.forEach(function (item) {
+                    if (item.catagory == 'secondary' && !item.completed) {
                         newTodos.push(item);
                     }
                 });
                 return newTodos;
-            } else if (this.visibilty == 'work-vice-line') {
-                var newTodos = [];
-                this.todos.forEach(function (item) {
-                    if (item.catagory == '工作雜事' && !item.completed) {
-                        newTodos.push(item);
-                    }
-                });
-                return newTodos;
+
             } else if (this.visibilty == 'done') {
                 var newTodos = [];
-                this.todos.forEach(function (item) {
+                this.todos.todolist.forEach(function (item) {
                     if (item.completed) {
                         newTodos.push(item);
                     }
@@ -111,5 +149,6 @@ var app = new Vue({
             }
         }
     }
+
 
 });
