@@ -16,7 +16,7 @@
 
 #### Gif Demo
 
-![Alt text](https://media.giphy.com/media/RcS486ouJJ1FeHmarw/giphy.gif)
+![Alt text](https://i.imgur.com/fpiYCTv.gif)
 
 
 
