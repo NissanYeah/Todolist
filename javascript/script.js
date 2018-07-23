@@ -1,6 +1,18 @@
 // firebase資料庫連接（略）
 
 
+// Initialize Firebase
+
+var config = {
+    apiKey: "AIzaSyBQxB5C9oTw6CI_auz2Z6UnvfJb4RaGXcs",
+    authDomain: "todo-project-demo-556e6.firebaseapp.com",
+    databaseURL: "https://todo-project-demo-556e6.firebaseio.com",
+    projectId: "todo-project-demo-556e6",
+    storageBucket: "todo-project-demo-556e6.appspot.com",
+    messagingSenderId: "201112292106"
+};
+firebase.initializeApp(config);
+
 
 
 
