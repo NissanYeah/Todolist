@@ -1,25 +1,8 @@
-// 連接資料庫
+// firebase資料庫連接（略）
 
-var config = {
-    apiKey: "AIzaSyCYwii4dJlgVvehy3wQpS1Aw8iaXZmNrO8",
-    authDomain: "todo-project-e731b.firebaseapp.com",
-    databaseURL: "https://todo-project-e731b.firebaseio.com",
-    projectId: "todo-project-e731b",
-    storageBucket: "todo-project-e731b.appspot.com",
-    messagingSenderId: "803994604460"
-};
-firebase.initializeApp(config);
 
-// 清除資料庫
-// var refName = firebase.database().ref().set({})
 
-//資料結構
-// var todos = [{
-//     id: 12312389,
-//     title: "買菜",
-//     catagory: "secondary",
-//     completed: false
-// }];
+
 
 
 var app = new Vue({

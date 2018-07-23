@@ -59,7 +59,7 @@
                     <li class="list-group-item" v-for="(item,key) in filteredTodo">
                         <div class="d-flex">
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" @click="finish(item)" :checked="item.completed" :id="item.id" id="hi">
+                                <input type="checkbox" class="form-check-input" @click="finish(item)" :checked="item.completed">
                                 <label class="form-check-label" :for="item.id" :class="{'completed':item.completed}">
                                     {{item.title}}
                                 </label>
@@ -83,7 +83,7 @@
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
-    <script src="./javascript/vue.js "></script>
+    <script src="./javascript/script.js "></script>
 
 
 
